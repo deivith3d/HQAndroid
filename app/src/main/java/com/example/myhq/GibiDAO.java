@@ -18,6 +18,8 @@ public class GibiDAO {
         values.put("serie",gibi.getSerie());
         values.put("editora",gibi.getEditora());
         values.put("imagem",gibi.getImagem());
+        values.put("ano",gibi.getAno());
+        values.put("adquirido",gibi.getAdquirido());
 
         Banco conn = new Banco(context);
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -34,6 +36,8 @@ public class GibiDAO {
         values.put("serie",gibi.getSerie());
         values.put("editora",gibi.getEditora());
         values.put("imagem",gibi.getImagem());
+        values.put("ano",gibi.getAno());
+        values.put("adquirido",gibi.getAdquirido());
 
         Banco conn = new Banco(context);
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -69,6 +73,8 @@ public class GibiDAO {
                 gb.setSerie(cursor.getString(3));
                 gb.setEditora(cursor.getString(4));
                 gb.setImagem(cursor.getInt(5));
+                gb.setAno(cursor.getInt(6));
+                gb.setAdquirido(cursor.getInt(7));
                 lista.add(gb); //adiciona o objeto na Lista de Objetos
             }while(cursor.moveToNext());
         }
@@ -89,6 +95,8 @@ public class GibiDAO {
             gb.setSerie(cursor.getString(3));
             gb.setEditora(cursor.getString(4));
             gb.setImagem(cursor.getInt(5));
+            gb.setAno(cursor.getInt(6));
+            gb.setAdquirido(cursor.getInt(7));
             return gb;
         }
         else

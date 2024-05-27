@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     int[] capas = { R.drawable.xmn030301t, R.drawable.xmn030302t, R.drawable.xmn030303t };
     int[] numeros = { 1, 2, 3 };
 
+    int[] anos = {0};
+
+    int[] adquiridos = {0};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,10 +106,42 @@ public class MainActivity extends AppCompatActivity {
             Gibi fake = new Gibi("Lista Vazia...", "");
             listaDeGibis.add(fake);
             lvGibis.setEnabled(false);
+            titulos[0] = "Lista Vazia...";
+            series[0] = "";
+            editoras[0] = "";
+            capas[0] = 0;
+            numeros[0] = 0;
+            anos[0] =0;
+            adquiridos[0] = 0;
         } else {
             lvGibis.setEnabled(true);
+            int x=0;
+            for(Gibi i : listaDeGibis) {
+                titulos[x] = i.getTitulo();
+                series[x] = i.getSerie();
+                editoras[x] = i.getEditora();
+                capas[x] = i.getImagem();
+                numeros[x] =i.getNumero();
+                anos[x] =i.getAno();
+                adquiridos[x] = i.getAdquirido();
+
+                x++;
+            }
+
         }
-        adapterCustomizado = new AdapterCustomizado(this, titulos, series, editoras, capas, numeros);
+      /*  String[] titulos = { "Título 1", "Título 2", "Título 3" };
+        String[] series = { "Série 1", "Série 2", "Série 3" };
+        String[] editoras = { "Editora 1", "Editora 2", "Editora 3" };
+        int[] capas = { R.drawable.xmn030301t, R.drawable.xmn030302t, R.drawable.xmn030303t };
+        int[] numeros = { 1, 2, 3 };
+
+        int[] anos= { 1, 2, 3 };
+
+        int[] adquiridos= { 1, 2, 3 };*/
+
+
+
+        adapterCustomizado = new AdapterCustomizado(this, titulos, series, editoras, capas, numeros, anos,adquiridos);
         lvGibis.setAdapter(adapterCustomizado);
     }
 

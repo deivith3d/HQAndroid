@@ -1,19 +1,23 @@
 package com.example.myhq;
 
 public class Gibi {
-    private int id, numero, imagem;
+    private int id, numero, imagem,ano;
     private String titulo, editora,serie;
+
+    private int adquirido;
 
     public Gibi() {
 
     }
 
-    public Gibi(int numero, int imagem, String titulo, String editora, String serie) {
+    public Gibi(int numero, int imagem, String titulo, String editora, String serie, int ano, int adquirido) {
         this.numero = numero;
         this.imagem = imagem;
         this.titulo = titulo;
         this.editora = editora;
         this.serie = serie;
+        this.ano = ano;
+        this.adquirido = adquirido;
     }
 
     public Gibi(String titulo, String serie) {
@@ -73,4 +77,18 @@ public class Gibi {
     public void setSerie(String serie) {
         this.serie = serie;
     }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public int getAno(){return this.ano;}
+
+    public void setAdquirido(int adquirido) {
+        this.adquirido = adquirido;
+    }
+
+    public int getAdquirido(){return this.adquirido;}
+
+
 }

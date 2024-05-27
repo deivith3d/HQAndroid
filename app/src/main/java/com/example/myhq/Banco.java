@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class Banco extends SQLiteOpenHelper {
-    private static final String NOME_BANCO = "MeuBancoHQ";
+    private static final String NOME_BANCO = "MeuBancoHQ01";
 
 
     public Banco(@Nullable Context context) {
@@ -22,7 +22,9 @@ public class Banco extends SQLiteOpenHelper {
                 " numero INTEGER , " +
                 " editora TEXT , " +
                 " serie TEXT , " +
-                " imagem INTEGER)");
+                " imagem INTEGER ," +
+                " ano INTEGER ," +
+                " adquirido INTEGER)");
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
