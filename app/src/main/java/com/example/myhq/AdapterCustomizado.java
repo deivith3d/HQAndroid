@@ -1,6 +1,10 @@
 package com.example.myhq;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +13,22 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class AdapterCustomizado extends BaseAdapter {
     Context context;
-    String lTitulos[];
-    String lSeries[];
-    String lEditoras[];
-    int lCapas[];
-    int lNumeros[];
+    List<String> lTitulos;
+    List<String> lSeries;
+    List<String> lEditoras;
+    List<String> lCapas;
+    List<Integer>  lNumeros;
 
-    int lAnos[];
+    List<String>  lAnos;
 
-    int lAdquiridos[];
+    List<Integer>  lAdquiridos;
     LayoutInflater inflater;
 
-    public AdapterCustomizado(Context context, String[] titulos, String[] series, String[] editoras, int[] capas, int[] numeros, int[] anos, int[] adquiridos) {
+    public AdapterCustomizado(Context context, List<String> titulos, List<String> series, List<String> editoras, List<String>capas, List<Integer> numeros, List<String> anos, List<Integer> adquiridos) {
         this.context = context;
         this.lTitulos = titulos;
         this.lSeries = series;
@@ -36,12 +42,12 @@ public class AdapterCustomizado extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return lTitulos.length;
+        return lTitulos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return lTitulos[position];
+        return lTitulos.get(position);
     }
 
     @Override
@@ -63,16 +69,31 @@ public class AdapterCustomizado extends BaseAdapter {
         TextView tvAno = convertView.findViewById(R.id.textViewAno);
         CheckBox cbAdquirido = convertView.findViewById(R.id.checkBoxAdquirido);
 
-        tvTitulo.setText(lTitulos[position]);
-        tvNumero.setText(String.valueOf(lNumeros[position]));
-        tvSerie.setText(lSeries[position]);
-        tvEditora.setText(lEditoras[position]);
-        capaImg.setImageResource(lCapas[position]);
-      /*  tvAno.setText(String.valueOf(lAnos[position]));
-        if(lAdquiridos[position]==1)
+        tvTitulo.setText(lTitulos.get(position));
+        tvNumero.setText(String.valueOf(lNumeros.get(position)));
+        tvSerie.setText(lSeries.get(position));
+        tvEditora.setText(lEditoras.get(position));
+
+        String caminhoImagem = lCapas.get(position);
+        Bitmap bitmap = BitmapFactory.decodeFile(caminhoImagem);
+        //capaImg.setImageBitmap(bitmap);
+        if (bitmap != null) {
+            capaImg.setImageBitmap(bitmap);
+        } else {
+            Log.e("AdapterCustomizado", "Falha ao carregar a imagem no caminho: " + caminhoImagem);
+        }
+        tvAno.setText(String.valueOf(lAnos.get(position)));
+        if(lAdquiridos.get(position)==1)
             cbAdquirido.setChecked(true);
         else
-            cbAdquirido.setChecked(false);*/
+            cbAdquirido.setChecked(false);
+        if (lAdquiridos.get(position) == 1) {
+            // Define a cor de fundo azul quando adquirido
+            convertView.setBackgroundColor(Color.WHITE);
+        } else {
+            // Define a cor de fundo padrão quando não adquirido
+            convertView.setBackgroundColor(Color.YELLOW); // Ou a cor padrão que você desejar
+        }
         return convertView;
     }
 }

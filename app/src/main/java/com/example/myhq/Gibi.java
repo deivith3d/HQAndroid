@@ -1,8 +1,8 @@
 package com.example.myhq;
 
 public class Gibi {
-    private int id, numero, imagem,ano;
-    private String titulo, editora,serie;
+    private int id, numero;
+    private String titulo, editora,serie,imagem,ano;
 
     private int adquirido;
 
@@ -10,7 +10,7 @@ public class Gibi {
 
     }
 
-    public Gibi(int numero, int imagem, String titulo, String editora, String serie, int ano, int adquirido) {
+    public Gibi(int numero, String imagem, String titulo, String editora, String serie, String ano, int adquirido) {
         this.numero = numero;
         this.imagem = imagem;
         this.titulo = titulo;
@@ -27,7 +27,12 @@ public class Gibi {
     }
 
     public String toString(){
-        return this.titulo + " | Nro.: "+this.getNumero();
+        return this.titulo + " | Nro.: "+this.getNumero()
+                + " | Ed.: "+this.getEditora()
+                + " | Sr.: "+this.getSerie()
+                + " | An.: "+this.getAno()
+                + " | Im.: "+this.getImagem()
+                + " | Ad.: "+this.getAdquirido();
     }
 
     public int getId() {
@@ -46,11 +51,11 @@ public class Gibi {
         this.numero = numero;
     }
 
-    public int getImagem() {
+    public String getImagem() {
         return imagem;
     }
 
-    public void setImagem(int imagem) {
+    public void setImagem(String imagem) {
         this.imagem = imagem;
     }
 
@@ -78,11 +83,11 @@ public class Gibi {
         this.serie = serie;
     }
 
-    public void setAno(int ano) {
+    public void setAno(String ano) {
         this.ano = ano;
     }
 
-    public int getAno(){return this.ano;}
+    public String getAno(){return this.ano;}
 
     public void setAdquirido(int adquirido) {
         this.adquirido = adquirido;

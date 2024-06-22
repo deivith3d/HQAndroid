@@ -2,18 +2,24 @@ package com.example.myhq;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.Manifest;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,20 +31,22 @@ public class MainActivity extends AppCompatActivity {
     //private ArrayAdapter<AdapterCustomizado> adapter;
     private List<Gibi> listaDeGibis;
 
-    String[] titulos = { "Título 1", "Título 2", "Título 3" };
-    String[] series = { "Série 1", "Série 2", "Série 3" };
-    String[] editoras = { "Editora 1", "Editora 2", "Editora 3" };
-    int[] capas = { R.drawable.xmn030301t, R.drawable.xmn030302t, R.drawable.xmn030303t };
-    int[] numeros = { 1, 2, 3 };
+    private ArrayList<String> titulos;
+    private ArrayList<String>series;
+    private ArrayList<String> editoras;
+    //int[] capas = { R.drawable.xmn030301t, R.drawable.xmn030302t, R.drawable.xmn030303t };
+    private ArrayList<String> capas;
+    private ArrayList<Integer> numeros;
 
-    int[] anos = {0};
+    private ArrayList<String> anos;
 
-    int[] adquiridos = {0};
-
+    private ArrayList<Integer> adquiridos;
+    private static final int PERMISSION_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkPermissions();
         lvGibis = findViewById(R.id.listGibis);
         carregarGibis();
         FloatingActionButton fab = findViewById(R.id.floatingActionButtonInluir);
@@ -98,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void carregarGibis() {
         listaDeGibis = GibiDAO.getGibis(this);
+        titulos = new ArrayList<String>();
+        series = new ArrayList<String>();
+        editoras = new ArrayList<String>();
+        capas = new ArrayList<String>();
+        numeros = new ArrayList<Integer>();
+        anos = new ArrayList<String>();
+        adquiridos = new ArrayList<Integer>();
 
         System.out.println("Encontrados: " + listaDeGibis.size() + " registros.");
         System.out.println("Array: " + listaDeGibis);
@@ -106,30 +121,33 @@ public class MainActivity extends AppCompatActivity {
             Gibi fake = new Gibi("Lista Vazia...", "");
             listaDeGibis.add(fake);
             lvGibis.setEnabled(false);
-            titulos[0] = "Lista Vazia...";
-            series[0] = "";
-            editoras[0] = "";
-            capas[0] = 0;
-            numeros[0] = 0;
-            anos[0] =0;
-            adquiridos[0] = 0;
+            titulos.add("Lista Vazia...");
+            series.add("");
+            editoras.add("");
+            capas.add("");
+            numeros.add(0);
+            anos.add("");
+            adquiridos.add(0);
         } else {
             lvGibis.setEnabled(true);
-            int x=0;
-            for(Gibi i : listaDeGibis) {
-                titulos[x] = i.getTitulo();
-                series[x] = i.getSerie();
-                editoras[x] = i.getEditora();
-                capas[x] = i.getImagem();
-                numeros[x] =i.getNumero();
-                anos[x] =i.getAno();
-                adquiridos[x] = i.getAdquirido();
+            int x = 0;
 
-                x++;
+
+            for (Gibi i : listaDeGibis) {
+
+                titulos.add(i.getTitulo());
+                series.add(i.getSerie());
+                editoras.add(i.getEditora());
+                capas.add(i.getImagem());
+                numeros.add(i.getNumero());
+                anos.add(i.getAno());
+                adquiridos.add(i.getAdquirido());
+                Log.d("MainActivity", "Imagem caminho: " + i.getImagem());
+                //x++;
             }
 
-        }
-      /*  String[] titulos = { "Título 1", "Título 2", "Título 3" };
+        }/*
+       String[] titulos = { "Título 1", "Título 2", "Título 3" };
         String[] series = { "Série 1", "Série 2", "Série 3" };
         String[] editoras = { "Editora 1", "Editora 2", "Editora 3" };
         int[] capas = { R.drawable.xmn030301t, R.drawable.xmn030302t, R.drawable.xmn030303t };
@@ -144,7 +162,11 @@ public class MainActivity extends AppCompatActivity {
         adapterCustomizado = new AdapterCustomizado(this, titulos, series, editoras, capas, numeros, anos,adquiridos);
         lvGibis.setAdapter(adapterCustomizado);
     }
-
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+    }
 
 
 

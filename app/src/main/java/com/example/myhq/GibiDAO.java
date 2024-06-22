@@ -72,8 +72,8 @@ public class GibiDAO {
                 gb.setNumero(cursor.getInt(2));
                 gb.setSerie(cursor.getString(3));
                 gb.setEditora(cursor.getString(4));
-                gb.setImagem(cursor.getInt(5));
-                gb.setAno(cursor.getInt(6));
+                gb.setImagem(cursor.getString(5));
+                gb.setAno(cursor.getString(6));
                 gb.setAdquirido(cursor.getInt(7));
                 lista.add(gb); //adiciona o objeto na Lista de Objetos
             }while(cursor.moveToNext());
@@ -94,8 +94,8 @@ public class GibiDAO {
             gb.setNumero(cursor.getInt(2));
             gb.setSerie(cursor.getString(3));
             gb.setEditora(cursor.getString(4));
-            gb.setImagem(cursor.getInt(5));
-            gb.setAno(cursor.getInt(6));
+            gb.setImagem(cursor.getString(5));
+            gb.setAno(cursor.getString(6));
             gb.setAdquirido(cursor.getInt(7));
             return gb;
         }
