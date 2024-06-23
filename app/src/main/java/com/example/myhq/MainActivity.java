@@ -62,13 +62,22 @@ public class MainActivity extends AppCompatActivity {
         lvGibis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (listaDeGibis != null && position >= 0 && position < listaDeGibis.size()) {
+                    Gibi gibi = listaDeGibis.get(position);
+                    if (gibi != null) {
+                        int idg = gibi.getId();
+                        Log.d("MainActivity", "idProduto: " + idg);
 
-                int idProduto = listaDeGibis.get(position).getId();
-                //System.out.println("id::: " + listaDeProdutos.get(position).getId() + ".........");
-                Intent intent = new Intent(MainActivity.this, SegundaActivity.class);
-                intent.putExtra("acao", "editar");
-                intent.putExtra("idGibi", id);
-                startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this, SegundaActivity.class);
+                        intent.putExtra("acao", "editar");
+                        intent.putExtra("idGibi", idg);
+                        startActivity(intent);
+                    } else {
+                        Log.e("MainActivity", "Gibi at position is null");
+                    }
+                } else {
+                    Log.e("MainActivity", "Invalid position or listaDeGibis is null");
+                }
             }
         });
 
@@ -167,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
     }
+
+
 
 
 

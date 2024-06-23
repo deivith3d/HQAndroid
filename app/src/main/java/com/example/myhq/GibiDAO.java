@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,12 +84,15 @@ public class GibiDAO {
 
     //Buscar um produto do banco pelo seu ID
     public static Gibi getGibiById(Context context, int idGibi){
+        Gibi gb = new Gibi();
         Banco conn = new Banco(context);
         SQLiteDatabase db = conn.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM gibis WHERE id = "+idGibi,null);
+        int e = cursor.getCount();
+        Log.d("SecondaryActivity","Cursor Contador: "+e);
         if(cursor.getCount()>0){
             cursor.moveToFirst();
-            Gibi gb = new Gibi();
+
             gb.setId(cursor.getInt(0));
             gb.setTitulo(cursor.getString(1));
             gb.setNumero(cursor.getInt(2));
@@ -97,12 +101,13 @@ public class GibiDAO {
             gb.setImagem(cursor.getString(5));
             gb.setAno(cursor.getString(6));
             gb.setAdquirido(cursor.getInt(7));
-            return gb;
+
         }
         else
         {
             return null;
         }
+        return gb;
     }
 
 

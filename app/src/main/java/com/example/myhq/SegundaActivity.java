@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -53,7 +55,7 @@ public class SegundaActivity extends AppCompatActivity {
         ivCarrega =findViewById(R.id.imageViewNovaCapa);
         imagePath = "/storage/emulated/0/Download/generica.jpg";
         ivCarrega.setImageResource(R.drawable.generica);
-        //gb = new Gibi();
+        gb = new Gibi();
        // Bitmap bitmap = null;
       //  try {
       //      bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imagePath));
@@ -141,6 +143,7 @@ public class SegundaActivity extends AppCompatActivity {
         String serie = etSerie.getText().toString();
         String editora = etEditora.getText().toString();
         String imagem = etImagem.getText().toString();
+        String imagePath = etImagem.getText().toString();
         String ano = etAno.getText().toString();
         int adquirido =0;
         if(cbAdquirido.isChecked())
@@ -164,7 +167,7 @@ public class SegundaActivity extends AppCompatActivity {
             gb.setImagem(imagePath); /////****************
             gb.setAno(ano);
             gb.setAdquirido(adquirido);
-            Toast.makeText(this, "Chegou aqui!!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Chegou aqui!!", Toast.LENGTH_LONG).show();
             if(acao.equals("inserir")){
                 GibiDAO.inserir(this,gb);
                 etTitulo.setText("");
@@ -186,19 +189,28 @@ public class SegundaActivity extends AppCompatActivity {
     }
 
     public void carregarFormulario() throws IOException {
-        int id = getIntent().getIntExtra("id",0);
+
+        int id = getIntent().getIntExtra("idGibi",0);
+        Log.e("SegundaActivity", "O ID é: "+id);
         tvID = findViewById(R.id.textViewID);
+        gb = new Gibi();
         gb = GibiDAO.getGibiById(this,id);
+        if (gb == null) {
+            // Lide com o caso de null, talvez registre um erro ou inicialize o objeto
+            Log.e("SegundaActivity", "Objeto Gibi está null");
+            return;
+        }
         tvID.setText(String.valueOf(id));
         etTitulo.setText(gb.getTitulo());
-        etNumero.setText(gb.getNumero());
+        etNumero.setText(String.valueOf(gb.getNumero()));
         etSerie.setText(gb.getSerie());
         etEditora.setText(gb.getEditora());
         etImagem.setText(gb.getImagem());
-        ivCarrega.setImageResource(R.drawable.generica);
-       // imagePath = "/storage/emulated/0/Download/generica.jpg";
+        //ivCarrega.setImageResource(R.drawable.generica);
+        String imagePath = gb.getImagem();
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
        // Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imagePath));
-       // ivCarrega.setImageBitmap(bitmap);
+        ivCarrega.setImageBitmap(bitmap);
         etAno.setText(gb.getAno());
         if(gb.getAdquirido()==1)
             cbAdquirido.setChecked(true);

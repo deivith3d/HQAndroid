@@ -18,7 +18,9 @@
             android:layout_height="190dp"
             android:layout_gravity="center_horizontal"
             android:paddingTop="8dp"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_background"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textViewTitulo"
@@ -27,7 +29,9 @@
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:text="Título"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textViewNumero"
@@ -35,7 +39,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="Número"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textViewSerie"
@@ -43,7 +49,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="Série"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textViewEditora"
@@ -51,7 +59,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="Editora"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textViewAno"
@@ -59,13 +69,17 @@
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="Ano"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <CheckBox
             android:id="@+id/checkBoxAdquirido"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Adquirido" />
+            android:text="Adquirido"
+            android:clickable="false"
+            android:focusable="false"/>
     </LinearLayout>
 
 </LinearLayout>

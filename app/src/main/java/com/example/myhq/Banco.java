@@ -23,7 +23,7 @@ public class Banco extends SQLiteOpenHelper {
                 " editora TEXT , " +
                 " serie TEXT , " +
                 " imagem TEXT ," +
-                " ano INTEGER ," +
+                " ano TEXT ," +
                 " adquirido INTEGER)");
     }
     @Override
