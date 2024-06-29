@@ -11,20 +11,23 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
 public class SegundaActivity extends AppCompatActivity {
-    private EditText etTitulo;
+    private Spinner spTitulo;
+    private Spinner spSerie;
+    private Spinner spEditora;
     private EditText etNumero;
-    private EditText etSerie;
-    private EditText etEditora;
     private EditText etImagem;
     private EditText etAno;
     private CheckBox cbAdquirido;
@@ -32,54 +35,114 @@ public class SegundaActivity extends AppCompatActivity {
     private Gibi gb;
     private TextView tvID;
     private Button btOk;
-
     private Button btCarregaImagem;
-
     private ImageView ivCarrega;
     private static final int PICK_IMAGE = 100;
     private int currentImageIndex = -1;
     private String imagePath;
+    private String[] titulos;
+    private String[] series;
+    private String[] editoras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segunda);
-        etTitulo = findViewById(R.id.editTextTitulo);
+
+        titulos = getResources().getStringArray(R.array.titulos);
+        spTitulo = findViewById(R.id.spinnerTitulo);
+        ArrayAdapter<String> adapTitulos = new ArrayAdapter<>(
+                getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                android.R.id.text1,
+                titulos
+        );
+        adapTitulos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTitulo.setAdapter(adapTitulos);
+
+        spTitulo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                // Aqui você pode lidar com a seleção do spinner, se necessário
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        series = getResources().getStringArray(R.array.series);
+        spSerie = findViewById(R.id.spinnerSerie);
+        ArrayAdapter<String> adapSeries = new ArrayAdapter<>(
+                getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                android.R.id.text1,
+                series
+        );
+        adapSeries.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSerie.setAdapter(adapSeries);
+        spSerie.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                // Aqui você pode lidar com a seleção do spinner, se necessário
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        editoras = getResources().getStringArray(R.array.editoras);
+        spEditora = findViewById(R.id.spinnerEditora);
+        ArrayAdapter<String> adapEditora = new ArrayAdapter<>(
+                getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                android.R.id.text1,
+                editoras
+        );
+        adapEditora.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spEditora.setAdapter(adapEditora);
+        spEditora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                // Aqui você pode lidar com a seleção do spinner, se necessário
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         etNumero = findViewById(R.id.editTextNumero);
-        etSerie = findViewById(R.id.editTextSerie);
-        etEditora = findViewById(R.id.editTextEditora);
         etImagem = findViewById(R.id.editTextImagem);
         etAno = findViewById(R.id.editTextAno);
         cbAdquirido = findViewById(R.id.checkboxAdquirido);
         btOk = findViewById(R.id.buttonInserir);
         btCarregaImagem = findViewById(R.id.buttonCarregarCapa);
-        ivCarrega =findViewById(R.id.imageViewNovaCapa);
+        ivCarrega = findViewById(R.id.imageViewNovaCapa);
         imagePath = "/storage/emulated/0/Download/generica.jpg";
         ivCarrega.setImageResource(R.drawable.generica);
         gb = new Gibi();
-       // Bitmap bitmap = null;
-      //  try {
-      //      bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imagePath));
-      //  } catch (IOException e) {
-      //      throw new RuntimeException(e);
-      //  }
-       // ivCarrega.setImageBitmap(bitmap);
+
         acao = getIntent().getStringExtra("acao");
-        if(acao.equals("editar"))
-        {
+        if (acao.equals("editar")) {
             try {
                 carregarFormulario();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
         btOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 salvar();
+                salvar();
             }
         });
 
-      //  btCarregaImagem = findViewById(getResources().getIdentifier("btnChoosePhoto" + (1), "id", getPackageName()));
         btCarregaImagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,117 +168,124 @@ public class SegundaActivity extends AppCompatActivity {
 
                 Cursor cursor = getContentResolver().query(selectedImageUri,
                         filePathColumn, null, null, null);
-                cursor.moveToFirst();
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imagePath = cursor.getString(columnIndex);
+                    cursor.close();
 
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imagePath = cursor.getString(columnIndex);
-                cursor.close();
-
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (currentImageIndex != -1) {
-                    ivCarrega.setImageBitmap(bitmap);
-                    currentImageIndex = -1;
-                   // TextView imagePathTextView = findViewById(R.id.textView);
-                    ///imagePathTextView.setText(imagePath);
-                    ///imagePathTextView.setVisibility(View.VISIBLE); // torna o TextView visível
-                    etImagem.setText(imagePath);
-                    //etImagem
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (currentImageIndex != -1) {
+                        ivCarrega.setImageBitmap(bitmap);
+                        currentImageIndex = -1;
+                        etImagem.setText(imagePath);
+                    }
                 }
             }
         }
     }
 
-    public void salvar()
-    {
+    public void salvar() {
         Toast.makeText(this, "Entrou no salvar!!", Toast.LENGTH_LONG).show();
-        String titulo = etTitulo.getText().toString();
+        String titulo = spTitulo.getSelectedItem().toString();
         int numero = 0;
         try {
             numero = Integer.parseInt(etNumero.getText().toString());
         } catch (NumberFormatException e) {
             e.printStackTrace();
-        };
-        String serie = etSerie.getText().toString();
-        String editora = etEditora.getText().toString();
-        String imagem = etImagem.getText().toString();
-        String imagePath = etImagem.getText().toString();
-        String ano = etAno.getText().toString();
-        int adquirido =0;
-        if(cbAdquirido.isChecked())
-            adquirido = 1;
-        else
-            adquirido = 0;
-
-        if(titulo.isEmpty()||numero==0||serie.isEmpty()||editora.isEmpty())//||imagem==0)
-        {
-            Toast.makeText(this, "Você deve preencher ambos os campos!!", Toast.LENGTH_LONG).show();
         }
-        else
-        {
-            if(acao.equals("inserir")){
+
+        String serie = spSerie.getSelectedItem().toString();
+        String editora = spEditora.getSelectedItem().toString();
+        String imagem = etImagem.getText().toString();
+        String ano = etAno.getText().toString();
+        int adquirido = cbAdquirido.isChecked() ? 1 : 0;
+
+        if (titulo.isEmpty() || numero == 0 || serie.isEmpty() || editora.isEmpty()) {
+            Toast.makeText(this, "Você deve preencher todos os campos obrigatórios!!", Toast.LENGTH_LONG).show();
+        } else {
+            if (acao.equals("inserir")) {
                 gb = new Gibi();
             }
             gb.setTitulo(titulo);
             gb.setNumero(numero);
-            gb.setSerie(serie+" Série");
+            gb.setSerie(serie);
             gb.setEditora(editora);
-            gb.setImagem(imagePath); /////****************
+            gb.setImagem(imagePath);
             gb.setAno(ano);
             gb.setAdquirido(adquirido);
-            //Toast.makeText(this, "Chegou aqui!!", Toast.LENGTH_LONG).show();
-            if(acao.equals("inserir")){
-                GibiDAO.inserir(this,gb);
-                etTitulo.setText("");
-                etNumero.setText("");
-                etSerie.setText("");
-                etEditora.setText("");
-                etImagem.setText("");
-                //imagePath = "/storage/emulated/0/Download/generica.jpg";
-                ivCarrega.setImageResource(R.drawable.generica);
-                etAno.setText("");
-                cbAdquirido.setChecked(false);
-              }
-            else
-            {
-                GibiDAO.editar(this,gb);
+
+            if (acao.equals("inserir")) {
+                GibiDAO.inserir(this, gb);
+                limparCampos();
+            } else {
+                GibiDAO.editar(this, gb);
                 finish();
             }
         }
     }
 
-    public void carregarFormulario() throws IOException {
+    private void limparCampos() {
+        etNumero.setText("");
+        etImagem.setText("");
+        ivCarrega.setImageResource(R.drawable.generica);
+        etAno.setText("");
+        cbAdquirido.setChecked(false);
+    }
 
-        int id = getIntent().getIntExtra("idGibi",0);
-        Log.e("SegundaActivity", "O ID é: "+id);
+    public void carregarFormulario() throws IOException {
+        int id = getIntent().getIntExtra("idGibi", 0);
+        Log.e("SegundaActivity", "O ID é: " + id);
         tvID = findViewById(R.id.textViewID);
-        gb = new Gibi();
-        gb = GibiDAO.getGibiById(this,id);
+        gb = GibiDAO.getGibiById(this, id);
         if (gb == null) {
-            // Lide com o caso de null, talvez registre um erro ou inicialize o objeto
             Log.e("SegundaActivity", "Objeto Gibi está null");
             return;
         }
         tvID.setText(String.valueOf(id));
-        etTitulo.setText(gb.getTitulo());
-        etNumero.setText(String.valueOf(gb.getNumero()));
-        etSerie.setText(gb.getSerie());
-        etEditora.setText(gb.getEditora());
-        etImagem.setText(gb.getImagem());
-        //ivCarrega.setImageResource(R.drawable.generica);
-        String imagePath = gb.getImagem();
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-       // Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imagePath));
-        ivCarrega.setImageBitmap(bitmap);
-        etAno.setText(gb.getAno());
-        if(gb.getAdquirido()==1)
-            cbAdquirido.setChecked(true);
-        else
-            cbAdquirido.setChecked(false);
 
+        int index = findIndex(titulos, gb.getTitulo());
+        if (index != -1) {
+            spTitulo.setSelection(index);
+        } else {
+            Log.e("SegundaActivity", "Título não encontrado: " + gb.getTitulo());
+        }
+
+        int index2 = findIndex(series, gb.getSerie());
+        if (index2 != -1) {
+            spSerie.setSelection(index2);
+        } else {
+            Log.e("SegundaActivity", "Série não encontrada: " + gb.getSerie());
+        }
+
+        int index3 = findIndex(editoras, gb.getEditora());
+        if (index3 != -1) {
+            spEditora.setSelection(index3);
+        } else {
+            Log.e("SegundaActivity", "Editora não encontrada: " + gb.getEditora());
+        }
+
+        etNumero.setText(String.valueOf(gb.getNumero()));
+        etImagem.setText(gb.getImagem());
+
+        Bitmap bitmap = BitmapFactory.decodeFile(gb.getImagem());
+        ivCarrega.setImageBitmap(bitmap);
+
+        etAno.setText(gb.getAno());
+        cbAdquirido.setChecked(gb.getAdquirido() == 1);
+    }
+
+    private int findIndex(String[] array, String value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -28,12 +28,11 @@
         android:text="Título:"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/editTextTitulo"
+    <Spinner
+        android:id="@+id/spinnerTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
+        android:background="@color/white"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -56,12 +55,11 @@
         android:text="Série:"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/editTextSerie"
+    <Spinner
+        android:id="@+id/spinnerSerie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
+        android:background="@color/white"/>
 
     <TextView
         android:id="@+id/textView6"
@@ -70,12 +68,11 @@
         android:text="Editora:"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/editTextEditora"
+    <Spinner
+        android:id="@+id/spinnerEditora"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
+        android:background="@color/white"/>
 
     <TextView
         android:id="@+id/textView7"

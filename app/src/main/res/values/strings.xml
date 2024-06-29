@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">Gibiteca DVT</string>
+    <string name="app_name">DVT Comics</string>
+
+    <string-array name="titulos">
+        <item>X-MEN</item>
+        <item>X-MEN EXTRA</item>
+        <item>ESPETACULAR HOMEM-ARANHA</item>
+        <item>INCRÍVEL HULK</item>
+        <item>CAPITÃO AMÉRICA</item>
+        <item>HERÓIS DA TV</item>
+    </string-array>
+
+    <string-array name="series">
+        <item>1a Série</item>
+        <item>2a Série</item>
+        <item>3a Série</item>
+        <item>4a Série</item>
+        <item>5a Série</item>
+    </string-array>
+
+    <string-array name="editoras">
+        <item>Abril</item>
+        <item>Panini</item>
+        <item>RGE</item>
+        <item>GLOBO</item>
+        <item>EBAL</item>
+    </string-array>
+
 </resources>
