@@ -21,14 +21,12 @@ public class AdapterCustomizado extends BaseAdapter {
     List<String> lSeries;
     List<String> lEditoras;
     List<String> lCapas;
-    List<Integer>  lNumeros;
-
-    List<String>  lAnos;
-
-    List<Integer>  lAdquiridos;
+    List<Integer> lNumeros;
+    List<String> lAnos;
+    List<Integer> lAdquiridos;
     LayoutInflater inflater;
 
-    public AdapterCustomizado(Context context, List<String> titulos, List<String> series, List<String> editoras, List<String>capas, List<Integer> numeros, List<String> anos, List<Integer> adquiridos) {
+    public AdapterCustomizado(Context context, List<String> titulos, List<String> series, List<String> editoras, List<String> capas, List<Integer> numeros, List<String> anos, List<Integer> adquiridos) {
         this.context = context;
         this.lTitulos = titulos;
         this.lSeries = series;
@@ -76,24 +74,22 @@ public class AdapterCustomizado extends BaseAdapter {
 
         String caminhoImagem = lCapas.get(position);
         Bitmap bitmap = BitmapFactory.decodeFile(caminhoImagem);
-        //capaImg.setImageBitmap(bitmap);
         if (bitmap != null) {
             capaImg.setImageBitmap(bitmap);
         } else {
+            capaImg.setImageResource(R.drawable.generica);
             Log.e("AdapterCustomizado", "Falha ao carregar a imagem no caminho: " + caminhoImagem);
         }
+
         tvAno.setText(String.valueOf(lAnos.get(position)));
-        if(lAdquiridos.get(position)==1)
-            cbAdquirido.setChecked(true);
-        else
-            cbAdquirido.setChecked(false);
+        cbAdquirido.setChecked(lAdquiridos.get(position) == 1);
+
         if (lAdquiridos.get(position) == 1) {
-            // Define a cor de fundo azul quando adquirido
             convertView.setBackgroundColor(Color.WHITE);
         } else {
-            // Define a cor de fundo padrão quando não adquirido
-            convertView.setBackgroundColor(Color.YELLOW); // Ou a cor padrão que você desejar
+            convertView.setBackgroundColor(Color.YELLOW);
         }
+
         return convertView;
     }
 }

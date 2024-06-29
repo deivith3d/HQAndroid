@@ -10,12 +10,12 @@ public class Gibi {
 
     }
 
-    public Gibi(int numero, String imagem, String titulo, String editora, String serie, String ano, int adquirido) {
+    public Gibi(int numero, String imagem, String titulo, String serie, String editora,  String ano, int adquirido) {
         this.numero = numero;
         this.imagem = imagem;
         this.titulo = titulo;
-        this.editora = editora;
         this.serie = serie;
+        this.editora = editora;
         this.ano = ano;
         this.adquirido = adquirido;
     }
@@ -28,8 +28,8 @@ public class Gibi {
 
     public String toString(){
         return this.titulo + " | Nro.: "+this.getNumero()
-                + " | Ed.: "+this.getEditora()
                 + " | Sr.: "+this.getSerie()
+                + " | Ed.: "+this.getEditora()
                 + " | An.: "+this.getAno()
                 + " | Im.: "+this.getImagem()
                 + " | Ad.: "+this.getAdquirido();
